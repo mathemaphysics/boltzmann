@@ -1,3 +1,6 @@
+.. role:: raw-math(raw)
+    :format: latex html
+
 =========
 Boltzmann
 =========
@@ -27,6 +30,4 @@ identical to the Monte Carlo method commonly used in simulating very large
 molecular systems and even quantum mechanical systems (via quantum Monte
 Carlo, QMC).
 
-.. math::
-
-   $$ a_i = \sum_{n ~ u} u(a(n)) $$
+:raw-math:`$$ a_i = \sum_{n ~ u} u(a(n)) $$`
