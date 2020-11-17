@@ -29,4 +29,4 @@ Carlo, QMC).
 
 .. math::
 
-   a_i = \sum_{n ~ u} u(a(n))
+   $$ a_i = \sum_{n ~ u} u(a(n)) $$
