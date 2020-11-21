@@ -110,6 +110,30 @@ namespace boltzmann
     }
 
     template<class T, int N>
+    std::string Node<T, N>::getName()
+    {
+        return nodeName;
+    }
+
+    template<class T, int N>
+    void Node<T, N>::setName(std::string name)
+    {
+        nodeName = name;
+    }
+
+    template<class T, int N>
+    int Node<T, N>::getId()
+    {
+        return nodeId;
+    }
+
+    template<class T, int N>
+    void Node<T, N>::setId(int id)
+    {
+        nodeId = id;
+    }
+
+    template<class T, int N>
     Node<T, N>::~Node()
     {
         
