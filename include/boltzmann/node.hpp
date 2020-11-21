@@ -154,6 +154,8 @@ namespace boltzmann
     template<class T, int N>
     boost::array<T, N> Node<T, N>::getNodeState()
     {
+        /// Don't forget that this creates a copy
+        /// and copies of the state take up space
         return boost::array<T, N>(stateParams);
     }
 
