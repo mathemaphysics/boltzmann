@@ -60,7 +60,19 @@ namespace boltzmann
          */
         int getId();
 
+        /**
+         * @brief Get the layer id
+         * @return The ID of the layer in which
+         * it lives; default -1 before set
+         */
         int getLayerId();
+
+        /**
+         * @brief Get the node state
+         * 
+         * @return A pointer to the node state array
+         */
+        boost::array<T, N> getNodeState();
 
     private:
         /// @brief The ID of a node
@@ -131,6 +143,18 @@ namespace boltzmann
     void Node<T, N>::setId(int id)
     {
         nodeId = id;
+    }
+
+    template<class T, int N>
+    int Node<T, N>::getLayerId()
+    {
+        return layerId;
+    }
+
+    template<class T, int N>
+    boost::array<T, N> Node<T, N>::getNodeState()
+    {
+        return boost::array<T, N>(stateParams);
     }
 
     template<class T, int N>
