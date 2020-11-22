@@ -1,6 +1,8 @@
 #ifndef BOLTZMANN_NODE_HPP
 #define BOLTZMANN_NODE_HPP
 
+#include "boltzmann/boltzmann_config.hpp"
+
 #include <string>
 
 #include <boost/container/vector.hpp>

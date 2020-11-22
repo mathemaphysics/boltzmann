@@ -1,0 +1,6 @@
+#ifndef BOLTZMANN_CONFIG_HPP
+#define BOLTZMANN_CONFIG_HPP
+
+#cmakedefine USE_BOOST_GRAPH
+
+#endif // BOLTZMANN_CONFIG_HPP

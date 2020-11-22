@@ -1,8 +1,16 @@
 #ifndef BOLTZMANN_NEURON_HPP
 #define BOLTZMANN_NEURON_HPP
 
-#include "node.hpp"
+#include "boltzmann/boltzmann_config.hpp"
 
+#ifndef USE_BOOST_GRAPH
+#   include "node.hpp"
+#else
+#   include <boost/graph/undirected_graph.hpp>
+#   include <boost/graph/directed_graph.hpp>
+#endif
+
+#ifndef USE_BOOST_GRAPH
 namespace boltzmann
 {
     /// @brief The primary neuron class used for RBMs
@@ -21,5 +29,16 @@ namespace boltzmann
         boost::container::vector<int> indexes;
     };
 }
-
+#else
+namespace boltzmann
+{
+    class Neuron
+    {
+    public:
+        Neuron();
+        ~Neuron();
+    };
+}
 #endif
+
+#endif // BOLTZMANN_NEURON_HPP
