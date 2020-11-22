@@ -12,9 +12,13 @@ namespace boltzmann
         Neuron();
         ~Neuron();
 
+        float getBias();
+        float getWeight(int);
+        boost::container::vector<float> getWeights();
+
     private:
         boost::container::vector<float> weights;
-        boost::array<float, 1> bias;
+        boost::container::vector<int> indexes;
     };
 }
 

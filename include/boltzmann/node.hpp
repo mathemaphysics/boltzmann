@@ -2,9 +2,9 @@
 #define BOLTZMANN_NODE_HPP
 
 #include <string>
-#include <vector>
 
 #include <boost/container/vector.hpp>
+#include <boost/container/map.hpp>
 #include <boost/array.hpp>
 
 namespace boltzmann
@@ -69,7 +69,6 @@ namespace boltzmann
 
         /**
          * @brief Get the node state
-         * 
          * @return A pointer to the node state array
          */
         boost::array<T, N> getNodeState();
