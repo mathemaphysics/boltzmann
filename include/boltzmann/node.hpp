@@ -30,7 +30,7 @@ namespace boltzmann
 
         int id;
         std::string name;
-        std::vector<float> biases;
+        float bias;
         std::vector<neigh_t> neighbors;
     };
 }
