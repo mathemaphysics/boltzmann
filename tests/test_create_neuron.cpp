@@ -1,4 +1,4 @@
-#include "boltzmann/neuron.hpp"
+#include "boltzmann/node.hpp"
 
 #include <cmath>
 
@@ -6,7 +6,7 @@ using namespace boltzmann;
 
 int main(int argc, char **argv)
 {
-    Neuron neuron();
+    Node neuron();
 
     //if (neuron.getName() != std::string("test"))
     //    return 1;
