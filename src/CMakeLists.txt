@@ -1,4 +1,4 @@
 find_package(Boost REQUIRED)
 
 include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
-add_library(boltzmann SHARED node.cpp layer.cpp network.cpp)
+add_library(boltzmann SHARED node.cpp network.cpp)

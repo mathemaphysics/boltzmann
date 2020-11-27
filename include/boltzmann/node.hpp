@@ -7,15 +7,11 @@
 #include <vector>
 #include <utility>
 #include <algorithm>
+#include <boost/numeric/ublas/matrix.hpp>
 
-#include <boost/graph/graph_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/dijkstra_shortest_paths.hpp>
-
-typedef struct {
-    int neighbor;
-    float weight;
-} neigh_t;
+//#include <boost/graph/graph_traits.hpp>
+//#include <boost/graph/adjacency_list.hpp>
+//#include <boost/graph/dijkstra_shortest_paths.hpp>
 
 namespace boltzmann
 {
@@ -29,9 +25,10 @@ namespace boltzmann
         ~Node();
 
         int id;
-        std::string name;
         float bias;
-        std::vector<neigh_t> neighbors;
+        std::string name;
+        std::vector<Node> neighbors;
+        std::vector<float> weights;
     };
 }
 

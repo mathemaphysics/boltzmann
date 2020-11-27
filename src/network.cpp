@@ -7,8 +7,12 @@ namespace boltzmann
         
     }
 
-    Network::Network(std::vector<Node>&& _nodes, std::vector<std::pair<int, int>>&& _edges)
-        : nodes(_nodes), edges(_edges)
+    Network::Network(int _nlayers, int *_lsizes)
+    {
+        
+    }
+
+    Network::Network(int _nlayers, std::vector<int> _lsizes)
     {
         
     }
