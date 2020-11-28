@@ -4,6 +4,11 @@
 #include "boltzmann/boltzmann_config.hpp"
 
 #include "boltzmann/node.hpp"
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <memory>
+#include <boost/multi_array.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 
 using matrix = boost::numeric::ublas::matrix<float>;
@@ -39,10 +44,22 @@ namespace boltzmann
         ~Network();
 
         /**
+         * @brief Convert object to a string description
+         * @return Converted string
+         */
+        std::string toString();
+
+        /**
          * @brief The layers and their nodes
          */
-        std::vector<vector<Node>> layers;
-        std::vector<matrix> weights;
+        int size;
+#ifdef USE_BOOST_MULTIARRAY
+        boost::multi_array<float_t, 3> weights;
+        boost::multi_array<Node, 2> layers;
+#else
+        vector<matrix> weights;
+        vector<vector<shared_ptr<Node>>> layers;
+#endif
     };
 }
 #endif

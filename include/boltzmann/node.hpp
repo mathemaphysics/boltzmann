@@ -5,13 +5,15 @@
 
 #include <array>
 #include <vector>
+#include <memory>
 #include <utility>
 #include <algorithm>
-#include <boost/numeric/ublas/matrix.hpp>
 
 //#include <boost/graph/graph_traits.hpp>
 //#include <boost/graph/adjacency_list.hpp>
 //#include <boost/graph/dijkstra_shortest_paths.hpp>
+
+using namespace std;
 
 namespace boltzmann
 {
@@ -25,10 +27,10 @@ namespace boltzmann
         ~Node();
 
         int id;
-        float bias;
-        std::string name;
-        std::vector<Node> neighbors;
-        std::vector<float> weights;
+        float_t bias;
+        string name;
+        vector<shared_ptr<Node>> neighbors;
+        vector<float_t> weights;
     };
 }
 

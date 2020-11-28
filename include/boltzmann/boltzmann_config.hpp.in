@@ -1,6 +1,17 @@
 #ifndef BOLTZMANN_CONFIG_HPP
 #define BOLTZMANN_CONFIG_HPP
 
+#cmakedefine USE_DOUBLE
 #cmakedefine USE_BOOST_GRAPH
+#cmakedefine USE_BOOST_MULTIARRAY
+
+namespace boltzmann
+{
+#ifdef USE_DOUBLE
+    typedef double float_t;
+#else
+    typedef float float_t;
+#endif
+}
 
 #endif // BOLTZMANN_CONFIG_HPP
