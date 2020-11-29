@@ -38,16 +38,22 @@ namespace boltzmann
         size = _index;
 
         /* Now point weights to individual nodes */
-        for (int _l = 0; _l < _nlayers - 1; _l++)
-        {
-            for (int _np = 0; _np < _lsizes[_l]; _np++)
-            {
-                for (int _nq = 0; _nq < _lsizes[_l+1]; _nq++)
-                {
-                    layers[_l][_np]->neighbors.push_back(layers[_l][_nq]);
-                }
-            }
-        }
+        for (auto _l = layers.begin(); _l < layers.end() - 1; _l++)
+            for (auto _np = _l->begin(); _np < _l->end(); _np++)
+                for (auto _nq = (_l + 1)->begin(); _nq < (_l + 1)->end(); _nq++)
+                    (*_np)->neighbors.push_back(*_nq);
+
+        /* This is equivalent to the above without using iterators */
+        //for (int _l = 0; _l < _nlayers - 1; _l++)
+        //{
+        //    for (int _np = 0; _np < _lsizes[_l]; _np++)
+        //    {
+        //        for (int _nq = 0; _nq < _lsizes[_l+1]; _nq++)
+        //        {
+        //            layers[_l][_np]->neighbors.push_back(layers[_l][_nq]);
+        //        }
+        //    }
+        //}
 #endif
     }
 
