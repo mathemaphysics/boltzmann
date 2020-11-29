@@ -23,10 +23,11 @@ namespace boltzmann
     public:
         Node();
         Node(int nodeId);
-        Node(int nodeId, std::string nodeName);
+        Node(int nodeId, string nodeName);
         ~Node();
 
         int id;
+        int state;
         float_t bias;
         string name;
         vector<shared_ptr<Node>> neighbors;
