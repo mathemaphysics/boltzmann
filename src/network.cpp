@@ -33,15 +33,28 @@ namespace boltzmann
         vector<shared_ptr<Node>> temp(_lsizes[_nlayers-1]);
         for (int _n = 0; _n < _lsizes[_nlayers-1]; _n++)
             temp[_n] = shared_ptr<Node>(new Node(_index++));
+        layers.push_back(temp);
 
         // Set the final size of the system; number of nodes
         size = _index;
 
         /* Now point weights to individual nodes */
-        for (auto _l = layers.begin(); _l < layers.end() - 1; _l++)
-            for (auto _np = _l->begin(); _np < _l->end(); _np++)
-                for (auto _nq = (_l + 1)->begin(); _nq < (_l + 1)->end(); _nq++)
-                    (*_np)->neighbors.push_back(*_nq);
+        vector<vector<shared_ptr<Node>>>::iterator __l;
+        vector<matrix>::iterator __w;
+        vector<shared_ptr<Node>>::iterator __np, __nq;
+        for (__l = layers.begin(), __w = weights.begin(); __l < layers.end() - 1 && __w < weights.end(); __l++, __w++)
+        {
+            for (__np = __l->begin(); __np < __l->end(); __np++)
+            {
+                for (__nq = (__l + 1)->begin(); __nq < (__l + 1)->end(); __nq++)
+                {
+                    (*__np)->neighbors.push_back(*__nq);
+                    (*__np)->weights.push_back(
+                        (*__w)(__np - __l->begin(), __nq - (__l+1)->begin())
+                    );
+                }
+            }
+        }
 #endif
     }
 

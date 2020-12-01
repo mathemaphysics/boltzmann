@@ -26,6 +26,16 @@ namespace boltzmann
         Node(int nodeId, string nodeName);
         ~Node();
 
+        /**
+         * @brief Update the value of the node based on neighbor states
+         */
+        void update();
+
+        /**
+         * @brief 
+         */
+        void propagate();
+
         int id;
         int state;
         float_t bias;

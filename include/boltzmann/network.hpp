@@ -8,8 +8,11 @@
 #include <iomanip>
 #include <sstream>
 #include <memory>
+#include <boost/range/combine.hpp>
+#include <boost/foreach.hpp>
 #include <boost/multi_array.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
 
 using matrix = boost::numeric::ublas::matrix<float>;
 using namespace std;
