@@ -4,6 +4,7 @@
 #include "boltzmann/boltzmann_config.hpp"
 
 #include "boltzmann/node.hpp"
+#include <cmath>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -47,6 +48,12 @@ namespace boltzmann
         ~Network();
 
         /**
+         * @brief Updates all node states in the layer
+         * @param _layer The index of the layer to update
+         */
+        void updateLayer(int _layer);
+
+        /**
          * @brief Convert object to a string description
          * @return Converted string
          */
@@ -56,6 +63,7 @@ namespace boltzmann
          * @brief The layers and their nodes
          */
         int size;
+        float_t temperature;
 #ifdef USE_BOOST_MULTIARRAY
         boost::multi_array<float_t, 3> weights;
         boost::multi_array<Node, 2> layers;
@@ -65,4 +73,4 @@ namespace boltzmann
 #endif
     };
 }
-#endif
+#endif // BOLTZMANN_NETWORK_HPP

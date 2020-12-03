@@ -4,11 +4,22 @@ namespace boltzmann
 {
     Network::Network()
     {
-        
+        srand((unsigned)time(0));
     }
 
+    /**
+     * @brief Initialize a Network with \c _nlayers layers
+     * Network objects store weights redundantly in both the
+     * \c Node::neighbors \c vector and also in a \c matrix
+     * in order to make it easier to compute with
+     * 
+     * @param _nlayers The number of layers to create
+     * @param _lsizes The sizes of each layer
+     */
     Network::Network(int _nlayers, vector<int> _lsizes)
     {
+        // This is a Metropolis-Hastings algorithm so seed well
+        srand((unsigned)time(0));
 #ifdef USE_BOOST_MULTIARRAY
         /* Initialize multiarrays */
         

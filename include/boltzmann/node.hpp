@@ -3,11 +3,15 @@
 
 #include "boltzmann/boltzmann_config.hpp"
 
+#include <cmath>
 #include <array>
 #include <vector>
 #include <memory>
 #include <utility>
 #include <algorithm>
+
+#include <boost/range/combine.hpp>
+#include <boost/foreach.hpp>
 
 //#include <boost/graph/graph_traits.hpp>
 //#include <boost/graph/adjacency_list.hpp>
@@ -28,13 +32,9 @@ namespace boltzmann
 
         /**
          * @brief Update the value of the node based on neighbor states
+         * @param _temp The (pseudo) temperature of the network
          */
-        void update();
-
-        /**
-         * @brief 
-         */
-        void propagate();
+        void update(float_t _temp);
 
         int id;
         int state;
@@ -42,6 +42,9 @@ namespace boltzmann
         string name;
         vector<shared_ptr<Node>> neighbors;
         vector<float_t> weights;
+
+    private:
+        float_t activation(float_t _input, float_t _temp);
     };
 }
 
