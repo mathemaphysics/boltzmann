@@ -35,6 +35,8 @@ namespace boltzmann
          * @param _temp The (pseudo) temperature of the network
          */
         void update(float_t _temp);
+        int addNeighbor(int _node);
+        int addNeighbor(Node _node);
 
         int id;
         int state;
