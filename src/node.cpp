@@ -23,6 +23,16 @@ namespace boltzmann
 
     }
 
+    int addNeighbor(int _node)
+    {
+        
+    }
+    
+    int addNeighbor(Node _node)
+    {
+
+    }
+
     void Node::update(float_t _temp)
     {
         // Node always has bias as base quantity
