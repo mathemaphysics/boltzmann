@@ -23,12 +23,12 @@ namespace boltzmann
 
     }
 
-    int addNeighbor(int _node)
+    void addNeighbor(int _node)
     {
         
     }
     
-    int addNeighbor(Node _node)
+    void addNeighbor(Node _node)
     {
 
     }
