@@ -1,5 +1,5 @@
-#ifndef BOLTZMANN_NEURON_HPP
-#define BOLTZMANN_NEURON_HPP
+#ifndef BOLTZMANN_NODE_HPP
+#define BOLTZMANN_NODE_HPP
 
 #include "boltzmann/boltzmann_config.hpp"
 
@@ -63,4 +63,4 @@ namespace boltzmann
     };
 }
 
-#endif // BOLTZMANN_NEURON_HPP
+#endif // BOLTZMANN_NODE_HPP
