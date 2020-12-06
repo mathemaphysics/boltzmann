@@ -38,7 +38,7 @@ namespace boltzmann
          * @brief Update the value of the node based on neighbor states
          * @param _temp The (pseudo) temperature of the network
          */
-        void update(float_t _temp);
+        void update(boltzFloat_t _temp);
 
         /**
          * @brief Add an existing node with given ID
@@ -51,15 +51,15 @@ namespace boltzmann
 
         int id;
         int state;
-        float_t bias;
+        boltzFloat_t bias;
         string name;
         vector<shared_ptr<Node>> neighbors;
-        vector<float_t> weights;
+        vector<boltzFloat_t> weights;
         vector<shared_ptr<Node>> bneighbors;
-        vector<float_t> bweights;
+        vector<boltzFloat_t> bweights;
 
     private:
-        float_t activation(float_t _input, float_t _temp);
+        boltzFloat_t activation(boltzFloat_t _input, boltzFloat_t _temp);
     };
 }
 

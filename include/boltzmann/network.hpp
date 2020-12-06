@@ -61,7 +61,7 @@ namespace boltzmann
          * @param _neighbor The index of the node in the next layer
          * @param _weight The value to set the weight to
          */
-        void setWeight(int _layer, int _node, int _neighbor, float_t _weight);
+        void setWeight(int _layer, int _node, int _neighbor, boltzFloat_t _weight);
 
         /**
          * @brief Convert object to a string description
@@ -73,9 +73,9 @@ namespace boltzmann
          * @brief The layers and their nodes
          */
         int size;
-        float_t temperature;
+        boltzFloat_t temperature;
 #ifdef USE_BOOST_MULTIARRAY
-        boost::multi_array<float_t, 3> weights;
+        boost::multi_array<boltzFloat_t, 3> weights;
         boost::multi_array<Node, 2> layers;
 #else
         vector<matrix> weights;

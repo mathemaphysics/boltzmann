@@ -12,7 +12,7 @@ namespace boltzmann
         id = _id;
     }
 
-    Node::Node(int _id, std::string _name)
+    Node::Node(int _id, string _name)
     {
         id = _id;
         name = _name;
@@ -33,22 +33,22 @@ namespace boltzmann
 
     }
 
-    void Node::update(float_t _temp)
+    void Node::update(boltzFloat_t _temp)
     {
         // Node always has bias as base quantity
-        float_t _input = bias;
+        boltzFloat_t _input = bias;
         for (auto _tup : boost::combine(bneighbors, bweights))
         {
             shared_ptr<Node> _nodeptr;
-            float_t _weight;
+            boltzFloat_t _weight;
             boost::tie(_nodeptr, _weight) = _tup;
             if (_nodeptr->state > 0)
                 _input += _weight;
         }
 
         // Take one Monte Carlo step (needs to be tuned still)
-        float_t _prob = activation(_input, _temp);
-        float_t _rand = (float_t)rand() / (float_t)RAND_MAX;
+        boltzFloat_t _prob = activation(_input, _temp);
+        boltzFloat_t _rand = (boltzFloat_t)rand() / (boltzFloat_t)RAND_MAX;
         if (_rand < _prob)
             state = 1;
         else
@@ -68,7 +68,7 @@ namespace boltzmann
         return strs.str();
     }
 
-    float_t Node::activation(float_t _input, float_t _temp)
+    boltzFloat_t Node::activation(boltzFloat_t _input, boltzFloat_t _temp)
     {
         return 1.0 / (1.0 + exp((double)(_input / _temp)));
     }

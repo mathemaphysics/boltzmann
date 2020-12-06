@@ -29,7 +29,7 @@ namespace boltzmann
         for (int _l = 0; _l < _nlayers - 1; _l++)
         {
             // Create the matrix for the weight from _l to _l + 1
-            weights.push_back(matrix(_lsizes[_l], _lsizes[_l + 1], (float_t) 0.0));
+            weights.push_back(matrix(_lsizes[_l], _lsizes[_l + 1], (boltzFloat_t) 0.0));
 
             // Create the nodes for layer _l
             vector<shared_ptr<Node>> temp(_lsizes[_l]);
@@ -91,7 +91,7 @@ namespace boltzmann
 
     // Set the weight symmetrically; assumes that you're giving the layer in
     // which the source node lives first
-    void Network::setWeight(int _layer, int _node, int _neighbor, float_t _weight)
+    void Network::setWeight(int _layer, int _node, int _neighbor, boltzFloat_t _weight)
     {
         weights[_layer](_node, _neighbor) = _weight;
         layers[_layer][_node]->weights[_neighbor] = _weight;

@@ -10,13 +10,13 @@ int main(int argc, char **argv)
 
     net.layers[0][0]->state = 1;
     net.layers[1][0]->state = 0;
-    float_t meanActivation = 0.0;
+    boltzFloat_t meanActivation = 0.0;
     for (int n = 0; n < numSamples; n++)
     {
         net.layers[1][0]->update(1.0);
-        meanActivation += (float_t)net.layers[1][0]->state;
+        meanActivation += (boltzFloat_t)net.layers[1][0]->state;
     }
-    meanActivation /= (float_t) numSamples;
+    meanActivation /= (boltzFloat_t) numSamples;
     cout << "Mean Activation: " << setw(10) << setprecision(7) << meanActivation << endl;
 
     if (meanActivation > 0.20 || meanActivation < 0.05)

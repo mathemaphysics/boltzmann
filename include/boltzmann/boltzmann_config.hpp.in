@@ -8,9 +8,9 @@
 namespace boltzmann
 {
 #ifdef USE_DOUBLE
-    typedef double float_t;
+    typedef double boltzFloat_t;
 #else
-    typedef float float_t;
+    typedef float boltzFloat_t;
 #endif
 }
 
