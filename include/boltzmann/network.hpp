@@ -73,6 +73,10 @@ namespace boltzmann
          * @brief The layers and their nodes
          */
         int size;
+
+        /**
+         * @brief The temperature to run the network at
+         */
         boltzFloat_t temperature;
 #ifdef USE_BOOST_MULTIARRAY
         boost::multi_array<boltzFloat_t, 3> weights;
