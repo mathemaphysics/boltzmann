@@ -51,7 +51,9 @@ namespace boltzmann
 
         /* Now point weights to individual nodes */
         vector<vector<shared_ptr<Node>>>::iterator __l;
+        vector<vector<shared_ptr<Node>>>::reverse_iterator __lr;
         vector<matrix>::iterator __w;
+        vector<matrix>::reverse_iterator __wr;
         vector<shared_ptr<Node>>::iterator __np, __nq;
         for (__l = layers.begin(), __w = weights.begin(); __l < layers.end() - 1 && __w < weights.end(); __l++, __w++)
         {
@@ -66,6 +68,19 @@ namespace boltzmann
                 }
             }
         }
+        for (__lr = layers.rbegin(), __wr = weights.rbegin(); __lr < layers.rend() - 1 && __wr < weights.rend(); __lr++, __wr++)
+        {
+            for (__np = __lr->begin(); __np < __lr->end(); __np++)
+            {
+                for (__nq = (__lr + 1)->begin(); __nq < (__lr + 1)->end(); __nq++)
+                {
+                    (*__np)->bneighbors.push_back(*__nq);
+                    (*__np)->bweights.push_back(
+                        (*__wr)(__nq - (__lr+1)->begin(), __np - __lr->begin())
+                    );
+                }
+            }
+        }
 #endif
     }
 
@@ -74,11 +89,29 @@ namespace boltzmann
         
     }
 
+    // Set the weight symmetrically; assumes that you're giving the layer in
+    // which the source node lives first
+    void Network::setWeight(int _layer, int _node, int _neighbor, float_t _weight)
+    {
+        weights[_layer](_node, _neighbor) = _weight;
+        layers[_layer][_node]->weights[_neighbor] = _weight;
+        layers[_layer + 1][_neighbor]->bweights[_node] = _weight;
+    }
+
     std::string Network::toString()
     {
         std::ostringstream strs;
-        strs << "Layers: " << std::setw(10) << layers.size() << std::endl;
-        strs << "Nodes:  " << std::setw(10) << size;
+        strs << "Layers:   " << std::setw(10) << layers.size() << std::endl;
+        strs << "Nodes:    " << std::setw(10) << size << endl;;
+        strs << "Internal: " << endl;
+        strs << endl;
+        strs << "Layers: " << endl;
+        for (int _l = 0; _l < layers.size(); _l++)
+        {
+            strs << "Layer " << setw(5) << _l << ": " << endl;
+            for (auto node : layers[_l])
+                strs << node->toString() << endl;
+        }
         return strs.str();
     }
 }

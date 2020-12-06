@@ -23,12 +23,12 @@ namespace boltzmann
 
     }
 
-    void addNeighbor(int _node)
+    void Node::addNeighbor(int _node)
     {
         
     }
     
-    void addNeighbor(Node _node)
+    void Node::addNeighbor(Node _node)
     {
 
     }
@@ -37,7 +37,7 @@ namespace boltzmann
     {
         // Node always has bias as base quantity
         float_t _input = bias;
-        for (auto _tup : boost::combine(neighbors, weights))
+        for (auto _tup : boost::combine(bneighbors, bweights))
         {
             shared_ptr<Node> _nodeptr;
             float_t _weight;
@@ -53,6 +53,19 @@ namespace boltzmann
             state = 1;
         else
             state = 0;
+    }
+
+    string Node::toString()
+    {
+        ostringstream strs;
+
+        strs << setw(12) << "NodeId: " << setw(7) << id << " ";
+        strs << setw(12) << "Neigh: " << setw(7) << neighbors.size() << " ";
+        strs << setw(12) << "BNeigh: " << setw(7) << bneighbors.size() << " ";
+        strs << setw(12) << "Wts: " << setw(7) << weights.size() << " ";
+        strs << setw(12) << "BWts: " << setw(7) << bweights.size();
+
+        return strs.str();
     }
 
     float_t Node::activation(float_t _input, float_t _temp)

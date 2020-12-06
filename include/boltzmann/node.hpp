@@ -5,6 +5,10 @@
 
 #include <cmath>
 #include <array>
+#include <iterator>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
 #include <vector>
 #include <memory>
 #include <utility>
@@ -43,12 +47,16 @@ namespace boltzmann
         void addNeighbor(int _node);
         void addNeighbor(Node _node);
 
+        string toString();
+
         int id;
         int state;
         float_t bias;
         string name;
         vector<shared_ptr<Node>> neighbors;
         vector<float_t> weights;
+        vector<shared_ptr<Node>> bneighbors;
+        vector<float_t> bweights;
 
     private:
         float_t activation(float_t _input, float_t _temp);

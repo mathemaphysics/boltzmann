@@ -5,6 +5,7 @@
 
 #include "boltzmann/node.hpp"
 #include <cmath>
+#include <iterator>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -54,10 +55,19 @@ namespace boltzmann
         void updateLayer(int _layer);
 
         /**
+         * @brief Set a specific weight in a layer of a network
+         * @param _layer The index of the layer in the network
+         * @param _node The index of the node in the layer
+         * @param _neighbor The index of the node in the next layer
+         * @param _weight The value to set the weight to
+         */
+        void setWeight(int _layer, int _node, int _neighbor, float_t _weight);
+
+        /**
          * @brief Convert object to a string description
          * @return Converted string
          */
-        std::string toString();
+        string toString();
 
         /**
          * @brief The layers and their nodes
