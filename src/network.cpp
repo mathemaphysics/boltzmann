@@ -50,20 +50,20 @@ namespace boltzmann
         size = _index;
 
         /* Now point weights to individual nodes */
-        vector<vector<shared_ptr<Node>>>::iterator __l;
+        vector<vector<shared_ptr<Node>>>::iterator __lf;
         vector<vector<shared_ptr<Node>>>::reverse_iterator __lr;
-        vector<matrix>::iterator __w;
+        vector<matrix>::iterator __wf;
         vector<matrix>::reverse_iterator __wr;
         vector<shared_ptr<Node>>::iterator __np, __nq;
-        for (__l = layers.begin(), __w = weights.begin(); __l < layers.end() - 1 && __w < weights.end(); __l++, __w++)
+        for (__lf = layers.begin(), __wf = weights.begin(); __lf < layers.end() - 1 && __wf < weights.end(); __lf++, __wf++)
         {
-            for (__np = __l->begin(); __np < __l->end(); __np++)
+            for (__np = __lf->begin(); __np < __lf->end(); __np++)
             {
-                for (__nq = (__l + 1)->begin(); __nq < (__l + 1)->end(); __nq++)
+                for (__nq = (__lf + 1)->begin(); __nq < (__lf + 1)->end(); __nq++)
                 {
                     (*__np)->neighbors.push_back(*__nq);
                     (*__np)->weights.push_back(
-                        (*__w)(__np - __l->begin(), __nq - (__l+1)->begin())
+                        (*__wf)(__np - __lf->begin(), __nq - (__lf+1)->begin())
                     );
                 }
             }
@@ -87,6 +87,30 @@ namespace boltzmann
     Network::~Network()
     {
         
+    }
+
+    void Network::initLayerState(int _layer)
+    {
+
+    }
+
+    void Network::setLayerState(int _layer)
+    {
+
+    }
+
+    void Network::updateLayerState(int _layer)
+    {
+        int numNodes = layers[_layer].size();
+        matrix activations(numNodes, 1, 0.0);
+        cout << activations << endl;
+        cout << weights[_layer-1] << endl;
+        auto result = boost::numeric::ublas::prod(weights[_layer-1], activations);
+        cout << result << endl;
+        for (int row = 0; row < numNodes; row++)
+        {
+
+        }
     }
 
     // Set the weight symmetrically; assumes that you're giving the layer in

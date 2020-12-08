@@ -48,11 +48,23 @@ namespace boltzmann
          */
         ~Network();
 
+        /** 
+         * @brief Initialize a layer to the specified random state
+         * @param _layer Index of the layer you want to initialize
+         */
+        void initLayerState(int _layer);
+
+        /**
+         * @brief Set the layer state (all nodes in the layer)
+         * @param _layer The index of the layer to set
+         */
+        void setLayerState(int _layer);
+
         /**
          * @brief Updates all node states in the layer
          * @param _layer The index of the layer to update
          */
-        void updateLayer(int _layer);
+        void updateLayerState(int _layer);
 
         /**
          * @brief Set a specific weight in a layer of a network
