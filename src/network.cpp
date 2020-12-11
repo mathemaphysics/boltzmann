@@ -100,7 +100,7 @@ namespace boltzmann
 
     void Network::initLayerState(int _layer)
     {
-
+        
     }
 
     void Network::setLayerState(int _layer)
