@@ -126,6 +126,7 @@ namespace boltzmann
 
         for (int row = 0; row < numOutNodes; row++)
         {
+            // Invoke Metropolis-Hastings here for each
             layers[_layer][row]->state = result(0, row);
         }
     }
