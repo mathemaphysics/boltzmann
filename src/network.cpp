@@ -20,6 +20,12 @@ namespace boltzmann
     {
         // This is a Metropolis-Hastings algorithm so seed well
         srand((unsigned)time(0));
+        boost::random::mt19937 rng(rand());
+        boost::random::normal_distribution<boltzFloat_t> normal(0.0, 1.0);
+        boost::random::variate_generator<
+            boost::random::mt19937 &,
+            boost::random::normal_distribution<boltzFloat_t>
+        > normGenerator(rng, normal);
 #ifdef USE_BOOST_MULTIARRAY
         /* Initialize multiarrays */
         
@@ -30,6 +36,9 @@ namespace boltzmann
         {
             // Create the matrix for the weight from _l to _l + 1
             weights.push_back(matrix(_lsizes[_l], _lsizes[_l + 1], (boltzFloat_t) 0.0));
+            for (int __mi = 0; __mi < _lsizes[_l]; __mi++)
+                for (int __mj = 0; __mj < _lsizes[_l+1]; __mj++)
+                    weights[_l](__mi, __mj) = normGenerator();
 
             // Create the nodes for layer _l
             vector<shared_ptr<Node>> temp(_lsizes[_l]);
@@ -101,25 +110,38 @@ namespace boltzmann
 
     void Network::updateLayerState(int _layer)
     {
-        int numNodes = layers[_layer].size();
-        matrix activations(numNodes, 1, 0.0);
+        int numOutNodes = layers[_layer].size();
+        int numInNodes = layers[_layer-1].size();
+        matrix activations(1, numInNodes, 1.0);
+        matrix biases(1, numOutNodes, 0.0);
+        for (int i = 0; i < numOutNodes; i++)
+            biases(0, i) = layers[_layer][i]->bias;
+
         cout << activations << endl;
         cout << weights[_layer-1] << endl;
-        auto result = boost::numeric::ublas::prod(weights[_layer-1], activations);
-        cout << result << endl;
-        for (int row = 0; row < numNodes; row++)
-        {
 
+        auto result = boost::numeric::ublas::prod(activations, weights[_layer-1]) + biases;
+
+        cout << result << endl;
+
+        for (int row = 0; row < numOutNodes; row++)
+        {
+            layers[_layer][row]->state = result(0, row);
         }
     }
 
     // Set the weight symmetrically; assumes that you're giving the layer in
     // which the source node lives first
-    void Network::setWeight(int _layer, int _node, int _neighbor, boltzFloat_t _weight)
+    void Network::setNodeWeight(int _layer, int _node, int _neighbor, boltzFloat_t _weight)
     {
         weights[_layer](_node, _neighbor) = _weight;
         layers[_layer][_node]->weights[_neighbor] = _weight;
         layers[_layer + 1][_neighbor]->bweights[_node] = _weight;
+    }
+
+    void Network::initLayerWeights(int _layer)
+    {
+
     }
 
     std::string Network::toString()

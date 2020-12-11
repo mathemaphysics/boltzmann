@@ -15,6 +15,7 @@
 #include <boost/multi_array.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
+#include <boost/random.hpp>
 
 using matrix = boost::numeric::ublas::matrix<float>;
 using namespace std;
@@ -73,7 +74,13 @@ namespace boltzmann
          * @param _neighbor The index of the node in the next layer
          * @param _weight The value to set the weight to
          */
-        void setWeight(int _layer, int _node, int _neighbor, boltzFloat_t _weight);
+        void setNodeWeight(int _layer, int _node, int _neighbor, boltzFloat_t _weight);
+
+        /**
+         * @brief Set the weights to a Gaussian distribution
+         * @param _layer Index of the layer of interest
+         */
+        void initLayerWeights(int _layer);
 
         /**
          * @brief Convert object to a string description

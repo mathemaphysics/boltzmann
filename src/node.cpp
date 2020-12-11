@@ -33,7 +33,7 @@ namespace boltzmann
 
     }
 
-    void Node::update(boltzFloat_t _temp)
+    void Node::updateState(boltzFloat_t _temp)
     {
         // Node always has bias as base quantity
         boltzFloat_t _input = bias;

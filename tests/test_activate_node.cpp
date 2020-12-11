@@ -6,14 +6,14 @@ int main(int argc, char **argv)
 {
     const int numSamples = 100;
     Network net(2, {1, 1});
-    net.setWeight(0, 0, 0, 2.0);
+    net.setNodeWeight(0, 0, 0, 2.0);
 
     net.layers[0][0]->state = 1;
     net.layers[1][0]->state = 0;
     boltzFloat_t meanActivation = 0.0;
     for (int n = 0; n < numSamples; n++)
     {
-        net.layers[1][0]->update(1.0);
+        net.layers[1][0]->updateState(1.0);
         meanActivation += (boltzFloat_t)net.layers[1][0]->state;
     }
     meanActivation /= (boltzFloat_t) numSamples;

@@ -38,7 +38,7 @@ namespace boltzmann
          * @brief Update the value of the node based on neighbor states
          * @param _temp The (pseudo) temperature of the network
          */
-        void update(boltzFloat_t _temp);
+        void updateState(boltzFloat_t _temp);
 
         /**
          * @brief Add an existing node with given ID
