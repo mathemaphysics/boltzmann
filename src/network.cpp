@@ -16,7 +16,7 @@ namespace boltzmann
      * @param _nlayers The number of layers to create
      * @param _lsizes The sizes of each layer
      */
-    Network::Network(int _nlayers, vector<int> _lsizes)
+    Network::Network(int _nlayers, vector<int> _lsizes, boltzFloat_t _temp)
     {
         // This is a Metropolis-Hastings algorithm so seed well
         srand((unsigned)time(0));
@@ -43,7 +43,7 @@ namespace boltzmann
             // Create the nodes for layer _l
             vector<shared_ptr<Node>> temp(_lsizes[_l]);
             for (int _n = 0; _n < _lsizes[_l]; _n++)
-                temp[_n] = shared_ptr<Node>(new Node(_index++));
+                temp[_n] = shared_ptr<Node>(new Node(_index++, _l));
             
             // Add it to the list of layers
             layers.push_back(temp);
@@ -52,7 +52,7 @@ namespace boltzmann
         // Create the final layer of nodes; not included above
         vector<shared_ptr<Node>> temp(_lsizes[_nlayers-1]);
         for (int _n = 0; _n < _lsizes[_nlayers-1]; _n++)
-            temp[_n] = shared_ptr<Node>(new Node(_index++));
+            temp[_n] = shared_ptr<Node>(new Node(_index++, _nlayers - 1));
         layers.push_back(temp);
 
         // Set the final size of the system; number of nodes
@@ -103,31 +103,56 @@ namespace boltzmann
         
     }
 
-    void Network::setLayerState(int _layer)
+    void Network::setLayerState(int _layer, vector<int> _state)
     {
-
+        for (auto _tup : boost::combine(layers[_layer], _state))
+        {
+            shared_ptr<Node> _nodeptr;
+            int _state;
+            boost::tie(_nodeptr, _state) = _tup;
+            _nodeptr->state = _state;
+        }
     }
 
     void Network::updateLayerState(int _layer)
     {
+        // Number of nodes in the input and output layers
         int numOutNodes = layers[_layer].size();
         int numInNodes = layers[_layer-1].size();
-        matrix activations(1, numInNodes, 1.0);
+
+        // Cast everything into linear algebra
+        matrix activations(1, numInNodes, 0.0);
+        for (int i = 0; i < numInNodes; i++)
+            activations(0, i) = layers[_layer-1][i]->state;
         matrix biases(1, numOutNodes, 0.0);
         for (int i = 0; i < numOutNodes; i++)
             biases(0, i) = layers[_layer][i]->bias;
 
-        cout << activations << endl;
-        cout << weights[_layer-1] << endl;
+        //cout << activations << endl;
+        //cout << weights[_layer-1] << endl;
 
+        // Grab the resulting activations
         auto result = boost::numeric::ublas::prod(activations, weights[_layer-1]) + biases;
 
-        cout << result << endl;
-
+        //cout << result << endl;
+        
         for (int row = 0; row < numOutNodes; row++)
         {
             // Invoke Metropolis-Hastings here for each
             layers[_layer][row]->state = result(0, row);
+
+            // Take one Monte Carlo step (needs to be tuned still)
+            boltzFloat_t _prob =
+                layers[_layer][row]
+                    ->activation(
+                        result(0, row),
+                        temperature
+                    );
+            boltzFloat_t _rand = (boltzFloat_t)rand() / (boltzFloat_t)RAND_MAX;
+            if (_rand < _prob)
+                layers[_layer][row]->state = 1;
+            else
+                layers[_layer][row]->state = 0;
         }
     }
 
@@ -149,7 +174,7 @@ namespace boltzmann
     {
         std::ostringstream strs;
         strs << "Layers:   " << std::setw(10) << layers.size() << std::endl;
-        strs << "Nodes:    " << std::setw(10) << size << endl;;
+        strs << "Nodes:    " << std::setw(10) << size << endl;
         strs << "Internal: " << endl;
         strs << endl;
         strs << "Layers: " << endl;

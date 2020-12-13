@@ -34,15 +34,17 @@ namespace boltzmann
          * @brief Construct a new Network with given layers and sizes
          * @param _nlayers The number of layers to create
          * @param _lsizes The number of nodes in each layer
+         * @param _temp Temperature of the network
          */
-        Network(int _nlayers, int *_lsizes);
+        Network(int _nlayers, int *_lsizes, boltzFloat_t _temp = 1.0);
 
         /**
          * @brief Construct a new Network with given layers and sizes
          * @param _nlayers The number of layers to create
          * @param _lsizes The number of nodes in each layer
+         * @param _temp Temperature of the network
          */
-        Network(int _nlayers, vector<int> _lsizes);
+        Network(int _nlayers, vector<int> _lsizes, boltzFloat_t _temp = 1.0);
 
         /**
          * @brief Clean things up; this may need work
@@ -59,7 +61,7 @@ namespace boltzmann
          * @brief Set the layer state (all nodes in the layer)
          * @param _layer The index of the layer to set
          */
-        void setLayerState(int _layer);
+        void setLayerState(int _layer, vector<int> _state);
 
         /**
          * @brief Updates all node states in the layer
@@ -96,7 +98,7 @@ namespace boltzmann
         /**
          * @brief The temperature to run the network at
          */
-        boltzFloat_t temperature;
+        boltzFloat_t temperature = 1.0;
 #ifdef USE_BOOST_MULTIARRAY
         boost::multi_array<boltzFloat_t, 3> weights;
         boost::multi_array<Node, 2> layers;
