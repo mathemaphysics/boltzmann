@@ -22,7 +22,8 @@
 		"ms-vscode.cpptools-extension-pack",
 		"wujipeng.cpp-comment-generator",
 		"isaias.doxygen-pack",
-		"github.vscode-pull-request-github"
+		"github.vscode-pull-request-github",
+		"mhutchie.git-graph"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
