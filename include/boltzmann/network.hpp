@@ -15,6 +15,7 @@
 #include <boost/multi_array.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
+#include <boost/random.hpp>
 
 using matrix = boost::numeric::ublas::matrix<float>;
 using namespace std;
@@ -33,15 +34,17 @@ namespace boltzmann
          * @brief Construct a new Network with given layers and sizes
          * @param _nlayers The number of layers to create
          * @param _lsizes The number of nodes in each layer
+         * @param _temp Temperature of the network
          */
-        Network(int _nlayers, int *_lsizes);
+        Network(int _nlayers, int *_lsizes, boltzFloat_t _temp = 1.0);
 
         /**
          * @brief Construct a new Network with given layers and sizes
          * @param _nlayers The number of layers to create
          * @param _lsizes The number of nodes in each layer
+         * @param _temp Temperature of the network
          */
-        Network(int _nlayers, vector<int> _lsizes);
+        Network(int _nlayers, vector<int> _lsizes, boltzFloat_t _temp = 1.0);
 
         /**
          * @brief Clean things up; this may need work
@@ -58,7 +61,7 @@ namespace boltzmann
          * @brief Set the layer state (all nodes in the layer)
          * @param _layer The index of the layer to set
          */
-        void setLayerState(int _layer);
+        void setLayerState(int _layer, vector<int> _state);
 
         /**
          * @brief Updates all node states in the layer
@@ -73,7 +76,13 @@ namespace boltzmann
          * @param _neighbor The index of the node in the next layer
          * @param _weight The value to set the weight to
          */
-        void setWeight(int _layer, int _node, int _neighbor, boltzFloat_t _weight);
+        void setNodeWeight(int _layer, int _node, int _neighbor, boltzFloat_t _weight);
+
+        /**
+         * @brief Set the weights to a Gaussian distribution
+         * @param _layer Index of the layer of interest
+         */
+        void initLayerWeights(int _layer);
 
         /**
          * @brief Convert object to a string description
@@ -89,7 +98,7 @@ namespace boltzmann
         /**
          * @brief The temperature to run the network at
          */
-        boltzFloat_t temperature;
+        boltzFloat_t temperature = 1.0;
 #ifdef USE_BOOST_MULTIARRAY
         boost::multi_array<boltzFloat_t, 3> weights;
         boost::multi_array<Node, 2> layers;

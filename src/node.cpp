@@ -7,15 +7,17 @@ namespace boltzmann
         
     }
 
-    Node::Node(int _id)
+    Node::Node(int _id, int _layer)
     {
         id = _id;
+        layer = _layer;
     }
 
-    Node::Node(int _id, string _name)
+    Node::Node(int _id, string _name, int _layer)
     {
         id = _id;
         name = _name;
+        layer = _layer;
     }
 
     Node::~Node()
@@ -33,7 +35,7 @@ namespace boltzmann
 
     }
 
-    void Node::update(boltzFloat_t _temp)
+    void Node::updateState(boltzFloat_t _temp)
     {
         // Node always has bias as base quantity
         boltzFloat_t _input = bias;
@@ -60,6 +62,7 @@ namespace boltzmann
         ostringstream strs;
 
         strs << setw(12) << "NodeId: " << setw(7) << id << " ";
+        strs << setw(12) << "Layer: " << setw(7) << layer;
         strs << setw(12) << "Neigh: " << setw(7) << neighbors.size() << " ";
         strs << setw(12) << "BNeigh: " << setw(7) << bneighbors.size() << " ";
         strs << setw(12) << "Wts: " << setw(7) << weights.size() << " ";

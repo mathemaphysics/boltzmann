@@ -30,15 +30,15 @@ namespace boltzmann
     {
     public:
         Node();
-        Node(int nodeId);
-        Node(int nodeId, string nodeName);
+        Node(int _node, int layer = -1);
+        Node(int _node, string _name, int _layer = -1);
         ~Node();
 
         /**
          * @brief Update the value of the node based on neighbor states
          * @param _temp The (pseudo) temperature of the network
          */
-        void update(boltzFloat_t _temp);
+        void updateState(boltzFloat_t _temp);
 
         /**
          * @brief Add an existing node with given ID
@@ -51,14 +51,13 @@ namespace boltzmann
 
         int id;
         int state;
+        int layer;
         boltzFloat_t bias;
         string name;
         vector<shared_ptr<Node>> neighbors;
         vector<boltzFloat_t> weights;
         vector<shared_ptr<Node>> bneighbors;
         vector<boltzFloat_t> bweights;
-
-    private:
         boltzFloat_t activation(boltzFloat_t _input, boltzFloat_t _temp);
     };
 }
