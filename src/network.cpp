@@ -128,14 +128,10 @@ namespace boltzmann
         for (int i = 0; i < numOutNodes; i++)
             biases(0, i) = layers[_layer][i]->bias;
 
-        //cout << activations << endl;
-        //cout << weights[_layer-1] << endl;
-
         // Grab the resulting activations
         auto result = boost::numeric::ublas::prod(activations, weights[_layer-1]) + biases;
 
-        //cout << result << endl;
-        
+        // Insert the result into the node->states
         for (int row = 0; row < numOutNodes; row++)
         {
             // Invoke Metropolis-Hastings here for each
