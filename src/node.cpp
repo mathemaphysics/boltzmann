@@ -57,6 +57,28 @@ namespace boltzmann
             state = 0;
     }
 
+    void Node::updateStateBack(boltzFloat_t _temp)
+    {
+        // Node always has bias as base quantity
+        boltzFloat_t _input = bias;
+        for (auto _tup : boost::combine(neighbors, weights))
+        {
+            shared_ptr<Node> _nodeptr;
+            boltzFloat_t _weight;
+            boost::tie(_nodeptr, _weight) = _tup;
+            if (_nodeptr->state > 0)
+                _input += _weight;
+        }
+
+        // Take one Monte Carlo step (needs to be tuned still)
+        boltzFloat_t _prob = activation(_input, _temp);
+        boltzFloat_t _rand = (boltzFloat_t)rand() / (boltzFloat_t)RAND_MAX;
+        if (_rand < _prob)
+            state = 1;
+        else
+            state = 0;
+    }
+
     string Node::toString()
     {
         ostringstream strs;

@@ -70,6 +70,13 @@ namespace boltzmann
         void updateLayerState(int _layer);
 
         /**
+         * @brief Updates all node states in the layer using
+         * the next layer states
+         * @param _layer The index of the layer to update
+         */
+        void updateLayerStateBack(int _layer);
+
+        /**
          * @brief Set a specific weight in a layer of a network
          * @param _layer The index of the layer in the network
          * @param _node The index of the node in the layer

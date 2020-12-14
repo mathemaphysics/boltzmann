@@ -152,6 +152,44 @@ namespace boltzmann
         }
     }
 
+    void Network::updateLayerStateBack(int _layer)
+    {
+        // Number of nodes in the input and output layers
+        int numOutNodes = layers[_layer].size();
+        int numInNodes = layers[_layer+1].size();
+
+        // Cast everything into linear algebra
+        matrix activations(1, numInNodes, 0.0);
+        for (int i = 0; i < numInNodes; i++)
+            activations(0, i) = layers[_layer+1][i]->state;
+        matrix biases(1, numOutNodes, 0.0);
+        for (int i = 0; i < numOutNodes; i++)
+            biases(0, i) = layers[_layer][i]->bias;
+
+        // Grab the resulting activations
+        auto result = boost::numeric::ublas::prod(activations, weights[_layer+1]) + biases;
+
+        // Insert the result into the node->states
+        for (int row = 0; row < numOutNodes; row++)
+        {
+            // Invoke Metropolis-Hastings here for each
+            layers[_layer][row]->state = result(0, row);
+
+            // Take one Monte Carlo step (needs to be tuned still)
+            boltzFloat_t _prob =
+                layers[_layer][row]
+                    ->activation(
+                        result(0, row),
+                        temperature
+                    );
+            boltzFloat_t _rand = (boltzFloat_t)rand() / (boltzFloat_t)RAND_MAX;
+            if (_rand < _prob)
+                layers[_layer][row]->state = 1;
+            else
+                layers[_layer][row]->state = 0;
+        }
+    }
+
     // Set the weight symmetrically; assumes that you're giving the layer in
     // which the source node lives first
     void Network::setNodeWeight(int _layer, int _node, int _neighbor, boltzFloat_t _weight)
