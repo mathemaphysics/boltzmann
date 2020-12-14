@@ -159,27 +159,27 @@ namespace boltzmann
         int numInNodes = layers[_layer+1].size();
 
         // Cast everything into linear algebra
-        matrix activations(1, numInNodes, 0.0);
+        matrix activations(numInNodes, 1, 0.0); // Matrix dims transposed relative to forward
         for (int i = 0; i < numInNodes; i++)
-            activations(0, i) = layers[_layer+1][i]->state;
-        matrix biases(1, numOutNodes, 0.0);
+            activations(i, 0) = layers[_layer+1][i]->state;
+        matrix biases(numOutNodes, 1, 0.0); // Matrix dims transposed relative to forward
         for (int i = 0; i < numOutNodes; i++)
-            biases(0, i) = layers[_layer][i]->bias;
+            biases(i, 0) = layers[_layer][i]->bias;
 
-        // Grab the resulting activations
-        auto result = boost::numeric::ublas::prod(activations, weights[_layer+1]) + biases;
+        // Grab the resulting activations; _layer+1-1 b/c _layer+1 weights are at _layer
+        auto result = boost::numeric::ublas::prod(weights[_layer+1-1], activations) + biases;
 
         // Insert the result into the node->states
         for (int row = 0; row < numOutNodes; row++)
         {
             // Invoke Metropolis-Hastings here for each
-            layers[_layer][row]->state = result(0, row);
+            layers[_layer][row]->state = result(row, 0);
 
             // Take one Monte Carlo step (needs to be tuned still)
             boltzFloat_t _prob =
                 layers[_layer][row]
                     ->activation(
-                        result(0, row),
+                        result(row, 0),
                         temperature
                     );
             boltzFloat_t _rand = (boltzFloat_t)rand() / (boltzFloat_t)RAND_MAX;
