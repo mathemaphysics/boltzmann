@@ -106,13 +106,12 @@ namespace boltzmann
          * @brief The temperature to run the network at
          */
         boltzFloat_t temperature = 1.0;
-#ifdef USE_BOOST_MULTIARRAY
-        boost::multi_array<boltzFloat_t, 3> weights;
-        boost::multi_array<Node, 2> layers;
-#else
+#ifdef USE_BOOST_UBLAS
         vector<matrix> weights;
-        vector<vector<shared_ptr<Node>>> layers;
+#else
+        boltzFloat_t **weights;
 #endif
+        vector<vector<shared_ptr<Node>>> layers;
     };
 }
 #endif // BOLTZMANN_NETWORK_HPP

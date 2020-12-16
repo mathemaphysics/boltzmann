@@ -1,10 +1,19 @@
 #include "boltzmann/network.hpp"
 
 using namespace boltzmann;
-
+/**
+ * @brief 
+ * @test
+ *  - Creates a 2-layer network
+ *  - Sets the only node-node weight to 2.0
+ *  - Sets the state of the top layer node to "on"
+ *  - Computes the average activation of the layer 2 node
+ *  - Checks that it is within proper range and returns
+ *    0 if okay or 1 if not
+ */
 int main(int argc, char **argv)
 {
-    const int numSamples = 100;
+    const int numSamples = 10000;
     Network net(2, {1, 1});
     net.setNodeWeight(0, 0, 0, 2.0);
 

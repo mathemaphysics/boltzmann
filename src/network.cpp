@@ -26,10 +26,7 @@ namespace boltzmann
             boost::random::mt19937 &,
             boost::random::normal_distribution<boltzFloat_t>
         > normGenerator(rng, normal);
-#ifdef USE_BOOST_MULTIARRAY
-        /* Initialize multiarrays */
-        
-#else
+#ifdef USE_BOOST_UBLAS
         /* Initialize matrix and weights */
         int _index = 0;
         for (int _l = 0; _l < _nlayers - 1; _l++)
@@ -90,6 +87,9 @@ namespace boltzmann
                 }
             }
         }
+#else
+        /* Use the default setup with arrays */
+
 #endif
     }
 

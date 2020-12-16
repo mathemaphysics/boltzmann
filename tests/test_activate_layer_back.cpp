@@ -2,6 +2,17 @@
 
 using namespace boltzmann;
 
+/**
+ * @brief Checks for consistency of activation (back)
+ * @test
+ *  - Creates a 3-layer RBM with random weights
+ *  - Sets layer 2's state to all "on"
+ *  - Runs the network backward one layer up
+ *  - Checks to see if the result for individual
+ *    node functions and layer functions produce
+ *    the same output; returns 0 if close enough,
+ *    1 if not
+ */
 int main(int argc, char **argv)
 {
     try
