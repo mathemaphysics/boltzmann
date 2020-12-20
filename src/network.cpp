@@ -26,16 +26,24 @@ namespace boltzmann
             boost::random::mt19937 &,
             boost::random::normal_distribution<boltzFloat_t>
         > normGenerator(rng, normal);
-#ifdef USE_BOOST_UBLAS
+
         /* Initialize matrix and weights */
         int _index = 0;
         for (int _l = 0; _l < _nlayers - 1; _l++)
         {
             // Create the matrix for the weight from _l to _l + 1
+#ifdef USE_BOOST_UBLAS
             weights.push_back(matrix(_lsizes[_l], _lsizes[_l + 1], (boltzFloat_t) 0.0));
+#else
+            weights.push_back(new boltzFloat_t[_lsizes[_l]*_lsizes[_l + 1]]);
+#endif
             for (int __mi = 0; __mi < _lsizes[_l]; __mi++)
                 for (int __mj = 0; __mj < _lsizes[_l+1]; __mj++)
+#ifdef USE_BOOST_UBLAS
                     weights[_l](__mi, __mj) = normGenerator();
+#else
+                    weights[_l][__mi*_lsizes[_l+1] + __mj] = normGenerator();
+#endif
 
             // Create the nodes for layer _l
             vector<shared_ptr<Node>> temp(_lsizes[_l]);
@@ -58,8 +66,13 @@ namespace boltzmann
         /* Now point weights to individual nodes */
         vector<vector<shared_ptr<Node>>>::iterator __lf;
         vector<vector<shared_ptr<Node>>>::reverse_iterator __lr;
+#ifdef USE_BOOST_UBLAS
         vector<matrix>::iterator __wf;
         vector<matrix>::reverse_iterator __wr;
+#else
+        vector<boltzFloat_t*>::iterator __wf;
+        vector<boltzFloat_t*>::reverse_iterator __wr;
+#endif
         vector<shared_ptr<Node>>::iterator __np, __nq;
         for (__lf = layers.begin(), __wf = weights.begin(); __lf < layers.end() - 1 && __wf < weights.end(); __lf++, __wf++)
         {
@@ -69,7 +82,11 @@ namespace boltzmann
                 {
                     (*__np)->neighbors.push_back(*__nq);
                     (*__np)->weights.push_back(
-                        (*__wf)(__np - __lf->begin(), __nq - (__lf+1)->begin())
+#ifdef USE_BOOST_UBLAS
+                        (*__wf)(__np - __lf->begin(), __nq - (__lf + 1)->begin())
+#else
+                        (*__wf)[(__np - __lf->begin()) * (__lf + 1)->size() + (__nq - (__lf + 1)->begin())]
+#endif
                     );
                 }
             }
@@ -82,20 +99,29 @@ namespace boltzmann
                 {
                     (*__np)->bneighbors.push_back(*__nq);
                     (*__np)->bweights.push_back(
+#ifdef USE_BOOST_UBLAS
                         (*__wr)(__nq - (__lr+1)->begin(), __np - __lr->begin())
+#else
+                        (*__wr)[(__nq - (__lr+1)->begin()) * __lr->size() + (__np - __lr->begin())]
+#endif
                     );
                 }
             }
         }
-#else
-        /* Use the default setup with arrays */
-
-#endif
     }
 
     Network::~Network()
     {
-        
+#ifdef USE_BOOST_UBLAS
+        // The Boost ublas data structures should clean themselves up
+#else
+        // But we need to clean up the arrays
+        while(weights.size() > 0)
+        {
+            delete [] weights.back();
+            weights.pop_back();
+        }
+#endif
     }
 
     void Network::initLayerState(int _layer)
@@ -121,27 +147,38 @@ namespace boltzmann
         int numInNodes = layers[_layer-1].size();
 
         // Cast everything into linear algebra
+#ifdef USE_BOOST_UBLAS
         matrix activations(1, numInNodes, 0.0);
         for (int i = 0; i < numInNodes; i++)
             activations(0, i) = layers[_layer-1][i]->state;
         matrix biases(1, numOutNodes, 0.0);
         for (int i = 0; i < numOutNodes; i++)
             biases(0, i) = layers[_layer][i]->bias;
-
+            
         // Grab the resulting activations
         auto result = boost::numeric::ublas::prod(activations, weights[_layer-1]) + biases;
+#else
+        // Here result should be allocated on the stack
+        boltzFloat_t result[numOutNodes];
+        for (int i = 0; i < numOutNodes; i++)
+        {
+            result[i] = layers[_layer][i]->bias;
+            for (int j = 0; j < numInNodes; j++)
+                result[i] += layers[_layer-1][j]->state * weights[_layer-1][j*numOutNodes+i];
+        }
+#endif
 
         // Insert the result into the node->states
         for (int row = 0; row < numOutNodes; row++)
         {
             // Invoke Metropolis-Hastings here for each
-            layers[_layer][row]->state = result(0, row);
+            layers[_layer][row]->state = __get_wts_elem(result, numOutNodes, 0, row); // B/c row height numOutNodes
 
             // Take one Monte Carlo step (needs to be tuned still)
             boltzFloat_t _prob =
                 layers[_layer][row]
                     ->activation(
-                        result(0, row),
+                        __get_wts_elem(result, numOutNodes, 0, row), // B/c row height numOutNodes
                         temperature
                     );
             boltzFloat_t _rand = (boltzFloat_t)rand() / (boltzFloat_t)RAND_MAX;
@@ -159,6 +196,7 @@ namespace boltzmann
         int numInNodes = layers[_layer+1].size();
 
         // Cast everything into linear algebra
+#ifdef USE_BOOST_UBLAS
         matrix activations(numInNodes, 1, 0.0); // Matrix dims transposed relative to forward
         for (int i = 0; i < numInNodes; i++)
             activations(i, 0) = layers[_layer+1][i]->state;
@@ -168,18 +206,28 @@ namespace boltzmann
 
         // Grab the resulting activations; _layer+1-1 b/c _layer+1 weights are at _layer
         auto result = boost::numeric::ublas::prod(weights[_layer+1-1], activations) + biases;
+#else
+        // Here result should be allocated on the stack
+        boltzFloat_t result[numOutNodes];
+        for (int i = 0; i < numOutNodes; i++)
+        {
+            result[i] = layers[_layer][i]->bias;
+            for (int j = 0; j < numInNodes; j++)
+                result[i] += weights[_layer+1-1][i*numInNodes+j] * layers[_layer+1][j]->state;
+        }
+#endif
 
         // Insert the result into the node->states
         for (int row = 0; row < numOutNodes; row++)
         {
             // Invoke Metropolis-Hastings here for each
-            layers[_layer][row]->state = result(row, 0);
+            layers[_layer][row]->state = __get_wts_elem(result, 1, row, 0); // B/c row height 1
 
             // Take one Monte Carlo step (needs to be tuned still)
             boltzFloat_t _prob =
                 layers[_layer][row]
                     ->activation(
-                        result(row, 0),
+                        __get_wts_elem(result, 1, row, 0), // B/c row height 1
                         temperature
                     );
             boltzFloat_t _rand = (boltzFloat_t)rand() / (boltzFloat_t)RAND_MAX;
@@ -194,7 +242,9 @@ namespace boltzmann
     // which the source node lives first
     void Network::setNodeWeight(int _layer, int _node, int _neighbor, boltzFloat_t _weight)
     {
-        weights[_layer](_node, _neighbor) = _weight;
+        int lsize = layers[_layer + 1].size();
+        //weights[_layer](_node, _neighbor) = _weight;
+        __get_wts_elem(weights[_layer], lsize, _node, _neighbor) = _weight;
         layers[_layer][_node]->weights[_neighbor] = _weight;
         layers[_layer + 1][_neighbor]->bweights[_node] = _weight;
     }

@@ -20,6 +20,12 @@
 using matrix = boost::numeric::ublas::matrix<float>;
 using namespace std;
 
+#ifdef USE_BOOST_UBLAS
+#define __get_wts_elem(A, N, i, j) A(i, j)
+#else
+#define __get_wts_elem(A, N, i, j) A[i*N+j]
+#endif
+
 namespace boltzmann
 {
     class Network
@@ -109,7 +115,7 @@ namespace boltzmann
 #ifdef USE_BOOST_UBLAS
         vector<matrix> weights;
 #else
-        boltzFloat_t **weights;
+        vector<boltzFloat_t*> weights;
 #endif
         vector<vector<shared_ptr<Node>>> layers;
     };
