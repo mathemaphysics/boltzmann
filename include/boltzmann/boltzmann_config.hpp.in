@@ -5,6 +5,7 @@
 #cmakedefine USE_BOOST_GRAPH
 #cmakedefine USE_BOOST_UBLAS
 #cmakedefine USE_BOOST_MULTIARRAY
+#cmakedefine WITH_OPENCV
 #cmakedefine WITH_OPENACC
 #cmakedefine WITH_OPENMP
 #cmakedefine WITH_CUDA
