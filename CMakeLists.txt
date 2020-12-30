@@ -12,6 +12,7 @@ option(WITH_OPENCV "Build project using OpenCV libraries for display" OFF)
 option(WITH_OPENACC "Build project using OpenACC directives" OFF)
 option(WITH_OPENMP "Build project using OpenMP directives" OFF)
 option(WITH_CUDA "Build project using CUDA libraries" OFF)
+option(WITH_BOOST_MC_RNG "Specify the random number generator for MC sampling" ON)
 
 configure_file(include/boltzmann/boltzmann_config.hpp.in include/boltzmann/boltzmann_config.hpp)
 

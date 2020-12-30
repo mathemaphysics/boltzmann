@@ -7,6 +7,22 @@ namespace boltzmann
         
     }
 
+#ifdef WITH_BOOST_MC_RNG
+    Node::Node(int _id, int _layer, boltzmann::mcVariateGenerator *_mcvargen)
+    {
+        id = _id;
+        layer = _layer;
+        mcGenerator = _mcvargen;
+    }
+
+    Node::Node(int _id, string _name, int _layer, boltzmann::mcVariateGenerator *_mcvargen)
+    {
+        id = _id;
+        name = _name;
+        layer = _layer;
+        mcGenerator = _mcvargen;
+    }
+#else
     Node::Node(int _id, int _layer)
     {
         id = _id;
@@ -19,6 +35,7 @@ namespace boltzmann
         name = _name;
         layer = _layer;
     }
+#endif
 
     Node::~Node()
     {
@@ -50,7 +67,11 @@ namespace boltzmann
 
         // Take one Monte Carlo step (needs to be tuned still)
         boltzFloat_t _prob = activation(_input, _temp);
+#ifdef WITH_BOOST_MC_RNG
+        boltzFloat_t _rand = (*mcGenerator)();
+#else
         boltzFloat_t _rand = (boltzFloat_t)rand() / (boltzFloat_t)RAND_MAX;
+#endif
         if (_rand < _prob)
             state = 1;
         else
@@ -72,7 +93,11 @@ namespace boltzmann
 
         // Take one Monte Carlo step (needs to be tuned still)
         boltzFloat_t _prob = activation(_input, _temp);
+#ifdef WITH_BOOST_MC_RNG
+        boltzFloat_t _rand = (*mcGenerator)();
+#else
         boltzFloat_t _rand = (boltzFloat_t)rand() / (boltzFloat_t)RAND_MAX;
+#endif
         if (_rand < _prob)
             state = 1;
         else

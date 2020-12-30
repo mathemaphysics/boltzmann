@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <sstream>
 #include <memory>
+#include <random>
 #include <boost/range/combine.hpp>
 #include <boost/foreach.hpp>
 #include <boost/multi_array.hpp>
@@ -112,6 +113,11 @@ namespace boltzmann
          * @brief The temperature to run the network at
          */
         boltzFloat_t temperature = 1.0;
+
+#ifdef WITH_BOOST_MC_RNG
+        // Set up the uniform generator using Boost
+        boltzmann::mcVariateGenerator *mcGenerator;
+#endif
 #ifdef USE_BOOST_UBLAS
         vector<matrix> weights;
 #else
