@@ -99,6 +99,14 @@ namespace boltzmann
         void initLayerWeights(int _layer);
 
         /**
+         * @brief Perform contrastive divergence (CD) learning
+         * on a given set of input samples from a population
+         * @param _cdOrder Contrastive divergence order parameter
+         * @param _input State of the input to clamp
+         */
+        void trainNetworkCDStep(int _cdOrder, vector<int> _input);
+
+        /**
          * @brief Convert object to a string description
          * @return Converted string
          */

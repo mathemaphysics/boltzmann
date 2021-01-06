@@ -291,6 +291,11 @@ namespace boltzmann
 
     }
 
+    void trainNetworkCDStep(int _cdOrder, vector<int> _input)
+    {
+
+    }
+
     std::string Network::toString()
     {
         std::ostringstream strs;
