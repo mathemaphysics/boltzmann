@@ -9,4 +9,6 @@ FROM mcr.microsoft.com/vscode/devcontainers/cpp:0-${VARIANT}
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends libboost-all-dev
 RUN apt-get -y install --no-install-recommends vim
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install libopencv-dev
 ENV EDITOR=vim
