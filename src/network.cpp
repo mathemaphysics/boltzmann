@@ -291,7 +291,7 @@ namespace boltzmann
 
     }
 
-    void trainNetworkCDStep(int _cdOrder, vector<int> _input)
+    void Network::trainNetworkCDStep(int _cdOrder, vector<int> _input)
     {
 
     }

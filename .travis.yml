@@ -1,0 +1,14 @@
+language: c++
+compiler: g++
+dist: bionic
+
+before_install:
+  - sudo apt-get update -y
+
+install:
+  - sudo apt-get install -y cmake
+
+script:
+  - mkdir build && cd build
+  - cmake ..
+  - make
