@@ -1,6 +1,9 @@
 .. role:: raw-math(raw)
     :format: latex html
 
+.. image:: https://travis-ci.com/mathemaphysics/boltzmann.svg?branch=mathemaphysics%2Fissue3
+    :target: https://travis-ci.com/mathemaphysics/boltzmann
+
 =========
 Boltzmann
 =========
