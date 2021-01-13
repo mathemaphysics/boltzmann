@@ -16,6 +16,7 @@
 
 #include <boost/range/combine.hpp>
 #include <boost/foreach.hpp>
+#include <boost/random.hpp>
 
 //#include <boost/graph/graph_traits.hpp>
 //#include <boost/graph/adjacency_list.hpp>
@@ -30,15 +31,26 @@ namespace boltzmann
     {
     public:
         Node();
+#ifdef WITH_BOOST_MC_RNG
+        Node(int _node, int layer = -1, boltzmann::mcVariateGenerator *mcvargen = nullptr);
+        Node(int _node, string _name, int _layer = -1, boltzmann::mcVariateGenerator *mcvargen = nullptr);
+#else
         Node(int _node, int layer = -1);
         Node(int _node, string _name, int _layer = -1);
+#endif
         ~Node();
 
         /**
-         * @brief Update the value of the node based on neighbor states
-         * @param _temp The (pseudo) temperature of the network
+         * @brief Update the value of the node based on forward states
+         * @param _temp The (pseudo) temperature of the network to use
          */
-        void updateState(boltzFloat_t _temp);
+        void updateState(boltzFloat_t _temp = 1.0);
+
+        /**
+         * @brief Update the value of the node state base on back states
+         * @param _temp The (pseudo) temperature of the network to use
+         */
+        void updateStateBack(boltzFloat_t _temp = 1.0);
 
         /**
          * @brief Add an existing node with given ID
@@ -59,6 +71,9 @@ namespace boltzmann
         vector<shared_ptr<Node>> bneighbors;
         vector<boltzFloat_t> bweights;
         boltzFloat_t activation(boltzFloat_t _input, boltzFloat_t _temp);
+#ifdef WITH_BOOST_MC_RNG
+        boltzmann::mcVariateGenerator *mcGenerator;
+#endif
     };
 }
 

@@ -18,10 +18,12 @@ int main(int argc, char **argv)
             return 5;
         if (net.layers[2][0]->weights.size() != 0)
             return 6;
+#ifdef USE_BOOST_UBLAS
         if (net.weights[0].size1() != 8 && net.weights[0].size2() != 8)
             return 7;
         if (net.weights[1].size1() != 8 && net.weights[1].size2() != 4)
             return 8;
+#endif
     }
     catch(const std::exception& e)
     {

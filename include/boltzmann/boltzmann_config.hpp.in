@@ -3,7 +3,17 @@
 
 #cmakedefine USE_DOUBLE
 #cmakedefine USE_BOOST_GRAPH
+#cmakedefine USE_BOOST_UBLAS
 #cmakedefine USE_BOOST_MULTIARRAY
+#cmakedefine WITH_OPENCV
+#cmakedefine WITH_OPENACC
+#cmakedefine WITH_OPENMP
+#cmakedefine WITH_CUDA
+#cmakedefine WITH_BOOST_MC_RNG
+
+#ifdef WITH_BOOST_MC_RNG
+#include <boost/random.hpp>
+#endif
 
 namespace boltzmann
 {
@@ -11,6 +21,15 @@ namespace boltzmann
     typedef double boltzFloat_t;
 #else
     typedef float boltzFloat_t;
+#endif
+
+#ifdef WITH_BOOST_MC_RNG
+    typedef boost::random::mt19937_64 mcEngine;
+    typedef boost::random::uniform_real_distribution<boltzFloat_t> mcDistribution;
+    typedef boost::random::variate_generator<
+        mcEngine &,
+        mcDistribution
+    > mcVariateGenerator;
 #endif
 }
 

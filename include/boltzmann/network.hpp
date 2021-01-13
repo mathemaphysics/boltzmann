@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <sstream>
 #include <memory>
+#include <random>
 #include <boost/range/combine.hpp>
 #include <boost/foreach.hpp>
 #include <boost/multi_array.hpp>
@@ -19,6 +20,12 @@
 
 using matrix = boost::numeric::ublas::matrix<float>;
 using namespace std;
+
+#ifdef USE_BOOST_UBLAS
+#define __get_wts_elem(A, N, i, j) A(i, j)
+#else
+#define __get_wts_elem(A, N, i, j) A[i*N+j]
+#endif
 
 namespace boltzmann
 {
@@ -70,6 +77,13 @@ namespace boltzmann
         void updateLayerState(int _layer);
 
         /**
+         * @brief Updates all node states in the layer using
+         * the next layer states
+         * @param _layer The index of the layer to update
+         */
+        void updateLayerStateBack(int _layer);
+
+        /**
          * @brief Set a specific weight in a layer of a network
          * @param _layer The index of the layer in the network
          * @param _node The index of the node in the layer
@@ -83,6 +97,14 @@ namespace boltzmann
          * @param _layer Index of the layer of interest
          */
         void initLayerWeights(int _layer);
+
+        /**
+         * @brief Perform contrastive divergence (CD) learning
+         * on a given set of input samples from a population
+         * @param _cdOrder Contrastive divergence order parameter
+         * @param _input State of the input to clamp
+         */
+        void trainNetworkCDStep(int _cdOrder, vector<int> _input);
 
         /**
          * @brief Convert object to a string description
@@ -99,13 +121,17 @@ namespace boltzmann
          * @brief The temperature to run the network at
          */
         boltzFloat_t temperature = 1.0;
-#ifdef USE_BOOST_MULTIARRAY
-        boost::multi_array<boltzFloat_t, 3> weights;
-        boost::multi_array<Node, 2> layers;
-#else
-        vector<matrix> weights;
-        vector<vector<shared_ptr<Node>>> layers;
+
+#ifdef WITH_BOOST_MC_RNG
+        // Set up the uniform generator using Boost
+        boltzmann::mcVariateGenerator *mcGenerator;
 #endif
+#ifdef USE_BOOST_UBLAS
+        vector<matrix> weights;
+#else
+        vector<boltzFloat_t*> weights;
+#endif
+        vector<vector<shared_ptr<Node>>> layers;
     };
 }
 #endif // BOLTZMANN_NETWORK_HPP
