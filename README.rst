@@ -1,7 +1,7 @@
 .. role:: raw-math(raw)
     :format: latex html
 
-.. image:: https://travis-ci.com/mathemaphysics/boltzmann.svg?branch=mathemaphysics%2Fmain
+.. image:: https://travis-ci.com/mathemaphysics/boltzmann.svg?branch=main
     :target: https://travis-ci.com/mathemaphysics/boltzmann
 
 =========
