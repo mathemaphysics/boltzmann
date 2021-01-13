@@ -1,12 +1,13 @@
 language: c++
 compiler: g++
-dist: bionic
+dist: focal
 
 before_install:
-  - sudo apt-get update -y
+  - sudo apt-get update -y && export DEBIAN_FRONTEND=noninteractive
 
 install:
   - sudo apt-get install -y cmake
+  - sudo apt-get -y install --no-install-recommends libboost-all-dev libopencv-dev
 
 script:
   - mkdir build && cd build
