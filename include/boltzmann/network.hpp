@@ -14,12 +14,17 @@
 #include <boost/range/combine.hpp>
 #include <boost/foreach.hpp>
 #include <boost/multi_array.hpp>
+#include <boost/random.hpp>
+#ifdef USE_BOOST_UBLAS
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
-#include <boost/random.hpp>
+#endif
 
-using matrix = boost::numeric::ublas::matrix<float>;
 using namespace std;
+
+#ifdef USE_BOOST_UBLAS
+using matrix = boost::numeric::ublas::matrix<float>;
+#endif
 
 #ifdef USE_BOOST_UBLAS
 #define __get_wts_elem(A, N, i, j) A(i, j)

@@ -4,7 +4,7 @@ namespace boltzmann
 {
     Node::Node()
     {
-        
+
     }
 
 #ifdef WITH_BOOST_MC_RNG
@@ -44,12 +44,12 @@ namespace boltzmann
 
     void Node::addNeighbor(int _node)
     {
-        
+        neighbors.emplace_back(shared_ptr<Node>(new Node(_node)));
     }
     
     void Node::addNeighbor(Node _node)
     {
-
+        neighbors.emplace_back(make_shared<Node>(_node));
     }
 
     void Node::updateState(boltzFloat_t _temp)

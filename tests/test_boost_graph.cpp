@@ -4,11 +4,21 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
+#include "gtest/gtest.h"
 
 using namespace boost;
 
-int main(int, char *[])
+class GraphTest: public ::testing::Test
 {
+protected:
+    void SetUp() override
+	{
+	}
+
+    void TearDown() override
+	{
+	}
+
     // Create a typedef for the Graph type
     typedef adjacency_list<vecS, vecS, bidirectionalS> Graph;
 
@@ -24,7 +34,10 @@ int main(int, char *[])
     };
     const int num_vertices = N;
     const char *name = "ABCDE";
+};
 
+TEST_F(GraphTest, CreateGraphTest)
+{
     // Writing out the edges in the graph
     typedef std::pair<int, int> Edge;
     Edge edge_array[] =
@@ -37,7 +50,5 @@ int main(int, char *[])
 
     // Add the edges to the graph object
     for (int i = 0; i < num_edges; ++i)
-        add_edge(edge_array[i].first, edge_array[i].second, g);
-
-    return 0;
+        EXPECT_NO_THROW(add_edge(edge_array[i].first, edge_array[i].second, g));
 }

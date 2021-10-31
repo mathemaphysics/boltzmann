@@ -1,17 +1,28 @@
 #include "boltzmann/node.hpp"
+#include "gtest/gtest.h"
 
 using namespace boltzmann;
 
-int main(int argc, char **argv)
+class NetworkTest: public ::testing::Test
 {
-    Node node(0, "test");
+protected:
+    void SetUp() override
+    {
+        node = new Node(0, "test");
+        node->addNeighbor(1);
+    }
 
-    if (node.id != 0)
-        return 1;
-    if (node.name != "test")
-        return 2;
-    if (node.neighbors.size() > 0)
-        return 3;
+    void TearDown() override
+    {
+        delete node;
+    }
 
-    return 0;
+    Node* node;
+};
+
+TEST_F(NetworkTest, CreateNodeTest)
+{
+    EXPECT_EQ(node->id, 0);
+    EXPECT_EQ(node->name, "test");
+    EXPECT_GT(node->neighbors.size(), 0);
 }

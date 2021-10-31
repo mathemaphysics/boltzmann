@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "array": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "*.tcc": "cpp",
+        "tuple": "cpp"
     }
 }
