@@ -1,29 +1,40 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.205.1/containers/cpp
 {
-	"name": "Boltzmann",
+	"name": "C++",
 	"build": {
 		"dockerfile": "Dockerfile",
-		// Update 'VARIANT' to pick an Debian / Ubuntu OS version: debian-10, debian-9, ubuntu-20.04, ubuntu-18.04
-		"args": { "VARIANT": "focal" }
+		// Update 'VARIANT' to pick an Debian / Ubuntu OS version: debian-11, debian-10, debian-9, ubuntu-21.04, ubuntu-20.04, ubuntu-18.04
+		// Use Debian 11, Debian 9, Ubuntu 18.04 or Ubuntu 21.04 on local arm64/Apple Silicon
+		"args": { "DEVUSER": "devuser" }
 	},
-	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
+	"runArgs": ["--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
 
 	// Set *default* container specific settings.json values on container create.
-	"settings": { 
-		"terminal.integrated.shell.linux": "/bin/bash"
-	},
+	"settings": {},
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-vscode.cpptools",
-		"twxs.cmake",
+		"jeff-hykin.better-cpp-syntax",
+		"ms-vscode.cpptools-themes",
+		"ms-vscode-remote.remote-containers",
+		"ms-vscode-remote.remote-ssh",
+		"tibotix.definition-autocompletion",
 		"ms-vscode.cmake-tools",
-		"go2sh.cmake-integration-vscode",
-		"ms-azuretools.vscode-docker",
+		"twxs.cmake",
 		"ms-vscode.cpptools-extension-pack",
-		"wujipeng.cpp-comment-generator",
-		"isaias.doxygen-pack",
-		"github.vscode-pull-request-github",
-		"mhutchie.git-graph"
+		"danielpinto8zz6.c-cpp-project-generator",
+		"novaturion.cpp-classes-creator",
+		"donjayamanne.githistory",
+		"felipecaputo.git-project-manager",
+		"eamodio.gitlens",
+		"austin.code-gnu-global",
+		"mhutchie.git-graph",
+		"huizhou.githd",
+		"github.codespaces",
+		"gitpod.gitpod-desktop",
+		"gitpod.gitpod-remote-ssh"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -33,5 +44,13 @@
 	// "postCreateCommand": "gcc -v",
 
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode"
+	"remoteUser": "devuser",
+	"features": {
+		"git": "os-provided"
+	},
+
+	// Maps the .ssh/ folder from your ${HOME}/.ssh into /home/devuser/.ssh
+	"mounts": [
+		"source=${localEnv:HOME}/.ssh,target=/home/devuser/.ssh,type=bind,consistency=cached"
+	]
 }

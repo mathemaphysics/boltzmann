@@ -1,4 +1,5 @@
 #include "boltzmann/network.hpp"
+#include "gtest/gtest.h"
 
 using namespace boltzmann;
 

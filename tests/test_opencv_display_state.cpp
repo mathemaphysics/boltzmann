@@ -2,8 +2,8 @@
 #include <opencv4/opencv2/highgui.hpp>
 #include <opencv4/opencv2/plot.hpp>
 #include <boost/filesystem.hpp>
-
 #include "boltzmann/boltzmann_config.hpp"
+#include "gtest/gtest.h"
 
 /**
  * @brief Tests display of a basic layer state via OpenCV

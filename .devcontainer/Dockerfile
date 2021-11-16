@@ -1,14 +1,26 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.148.1/containers/cpp/.devcontainer/base.Dockerfile
+FROM ubuntu:focal
 
-# [Choice] Debian / Ubuntu version: debian-10, debian-9, ubuntu-20.04, ubuntu-18.04
-#ARG VARIANT="buster"
-ARG VARIANT="focal"
-FROM mcr.microsoft.com/vscode/devcontainers/cpp:0-${VARIANT}
+ARG DEVUSER devuser
 
-# [Optional] Uncomment this section to install additional packages.
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends libboost-all-dev
-RUN apt-get -y install --no-install-recommends vim
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install libopencv-dev
-ENV EDITOR=vim
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get -y update \
+ && apt-get -y install --no-install-recommends build-essential \
+ 					       g++ \
+					       gdb \
+ 					       cmake \
+					       git \
+					       openssh-client \
+					       wget \
+					       vim \
+					       sudo \
+						   libboost-all-dev \
+						   libopencv-dev \
+					       python3 \
+					       python3-dev \
+					       python3-pip \
+					       python3-numpy
+
+ENV DEVUSER=${DEVUSER}
+RUN adduser --uid 1000 --disabled-password --gecos "" ${DEVUSER} \
+    && echo "${DEVUSER} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${DEVUSER}
+USER ${DEVUSER}
