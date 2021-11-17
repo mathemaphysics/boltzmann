@@ -49,7 +49,7 @@
 		"git": "os-provided"
 	},
 
-	// Maps the .ssh/ folder from your ${HOME}/.ssh into /home/devuser/.ssh
+	// Maps the .ssh/ folder from your ${HOME} into /home/devuser/.ssh
 	"mounts": [
 		"source=${localEnv:HOME}/.ssh,target=/home/devuser/.ssh,type=bind,consistency=cached"
 	]
