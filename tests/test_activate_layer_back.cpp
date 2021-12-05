@@ -35,8 +35,8 @@ protected:
 
 TEST_F(NetworkTest, LayerActivationBack)
 {
-    std::vector<boltzFloat_t> nodeMeanStates(net->layers[1].size(), 0.0);
-    std::vector<boltzFloat_t> layerMeanStates(net->layers[1].size(), 0.0);
+    std::vector<boltzFloat_t> nodeMeanStates(net->layers[1].size(), 0);
+    std::vector<boltzFloat_t> layerMeanStates(net->layers[1].size(), 0);
     for (int n = 0; n < numSamples; n++)
     {
         net->updateLayerStateBack(1); // Already has the temperature

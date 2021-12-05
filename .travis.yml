@@ -11,6 +11,6 @@ install:
 
 script:
   - mkdir build && cd build
-  - cmake .. -DWITH_OPENCV=ON
+  - cmake .. -DWITH_OPENCV=OFF
   - make
   - make test
