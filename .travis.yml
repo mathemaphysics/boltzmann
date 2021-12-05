@@ -13,3 +13,4 @@ script:
   - mkdir build && cd build
   - cmake .. -DWITH_OPENCV=ON
   - make
+  - make test
