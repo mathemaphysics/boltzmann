@@ -51,7 +51,7 @@ include(GoogleTest)
 
 if (WITH_OPENCV)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/output)
-gtest_discover_tests(OpenCVDisplayState)
+gtest_discover_tests(test_opencv_display_state)
 add_test(NAME OpenCVDisplayState COMMAND test_opencv_display_state WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/output)
 endif (WITH_OPENCV)
 
