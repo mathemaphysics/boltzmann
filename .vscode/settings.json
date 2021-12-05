@@ -1,9 +1,11 @@
 {
+    "gtestExplorer.executable": "${workspaceFolder}/build/boltzmann-makefiles-configure/bin/test_activate_layer",
     "files.associations": {
         "array": "cpp",
         "cmath": "cpp",
         "*.tcc": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "iomanip": "cpp"
     },
     "editor.tokenColorCustomizations": {
         "textMateRules": [
@@ -26,5 +28,8 @@
                 }
             }
         ]
-    }
+    },
+    "gtest-adapter.debugConfig": [
+        "g++-9 - Build and debug active file"
+    ]
 }

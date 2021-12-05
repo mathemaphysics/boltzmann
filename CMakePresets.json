@@ -1,0 +1,47 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 16,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "boltzmann-makefiles-configure",
+            "displayName": "Boltzmann Unix Makefiles Configuration",
+            "description": "Default build using Unix Makefiles generator",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "environment": {
+            },
+            "cacheVariables": {
+                "JSONCPP_WITH_TESTS": "FALSE",
+                "JSONCPP_WITH_POST_BUILD_UNITTEST": "FALSE",
+                "JSONCPP_WITH_PKGCONFIG_SUPPORT": "FALSE",
+                "FETCHCONTENT_QUIET": "FALSE",
+                "GIT_PROGRESS": "TRUE"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "boltzmann-makefiles-build",
+            "displayName": "Boltzmann Unix Makefiles Build",
+            "configurePreset": "boltzmann-makefiles-configure"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "boltzmann-makefiles-test",
+            "displayName": "Boltzmann Unix Makefiles Test",
+            "configurePreset": "boltzmann-makefiles-configure",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "stopOnFailure": true
+            }
+        }
+    ]
+}

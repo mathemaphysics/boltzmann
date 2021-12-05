@@ -34,7 +34,9 @@
 		"huizhou.githd",
 		"github.codespaces",
 		"gitpod.gitpod-desktop",
-		"gitpod.gitpod-remote-ssh"
+		"gitpod.gitpod-remote-ssh",
+		"davidschuldenfrei.gtest-adapter",
+		"openningia.vscode-google-test-adapter"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
