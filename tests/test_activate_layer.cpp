@@ -35,8 +35,8 @@ protected:
 TEST_F(NetworkTest, LayerActivation)
 {
     // Temp output for the node evaluations
-    std::vector<boltzFloat_t> nodeMeanStates(net->layers[2].size());
-    std::vector<boltzFloat_t> layerMeanStates(net->layers[2].size());
+    std::vector<boltzFloat_t> nodeMeanStates(net->layers[2].size(), 0.0);
+    std::vector<boltzFloat_t> layerMeanStates(net->layers[2].size(), 0.0);
     for (int n = 0; n < numSamples; n++)
     {
         net->updateLayerState(2); // Already has the temperature
