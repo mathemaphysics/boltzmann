@@ -14,7 +14,6 @@ using namespace boltzmann;
  *    the same output; returns 0 if close enough,
  *    1 if not
  */
-
 class NetworkTest: public ::testing::Test
 {
 protected:

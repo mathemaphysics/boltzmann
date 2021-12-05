@@ -11,6 +11,6 @@ install:
 
 script:
   - mkdir build && cd build
-  - cmake .. -DWITH_OPENCV=OFF
+  - cmake .. -DWITH_OPENCV=OFF -DUSE_BOOST_UBLAS=OFF
   - make
   - make test
