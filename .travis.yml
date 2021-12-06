@@ -12,5 +12,5 @@ install:
 script:
   - mkdir build
   - cmake --preset boltzmann-makefiles-configure -B build -S .
-  - make
-  - make test
+  - cmake --build build --target all
+  - cmake --build build --target test
