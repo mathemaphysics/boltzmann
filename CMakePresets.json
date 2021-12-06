@@ -15,6 +15,9 @@
             "environment": {
             },
             "cacheVariables": {
+                "USE_BOOST_UBLAS": "FALSE",
+                "WITH_BOOST_MC_RNG": "FALSE",
+                "WITH_OPENCV": "FALSE",
                 "JSONCPP_WITH_TESTS": "FALSE",
                 "JSONCPP_WITH_POST_BUILD_UNITTEST": "FALSE",
                 "JSONCPP_WITH_PKGCONFIG_SUPPORT": "FALSE",

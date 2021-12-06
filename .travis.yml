@@ -10,7 +10,7 @@ install:
   - sudo apt-get -y install --no-install-recommends libboost-all-dev libopencv-dev
 
 script:
-  - mkdir build && cd build
-  - cmake .. -DWITH_OPENCV=OFF -DUSE_BOOST_UBLAS=OFF
+  - mkdir build
+  - cmake --preset boltzmann-makefiles-configure -B build -S .
   - make
   - make test
